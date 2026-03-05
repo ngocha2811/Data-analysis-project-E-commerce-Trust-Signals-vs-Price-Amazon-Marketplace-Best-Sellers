@@ -11,11 +11,17 @@ I collected data on 6,000+ Amazon Best Sellers through web scraping, and the ana
 
 ### Trust Signals vs Sales Performance
 
-![Trust vs Sales](visuals/trust_vs_sales_scatter.png)
+<p align="center">
+  <img src="visuals/trust_vs_sales_scatter.png" width="800">
+</p>
+
+
 
 ### Review Volume Distribution by Rank Group
 
-![Median Reviews Distribution In 3 Rank Groups](visuals/reviews_distribution_rankgroup.png)
+<p align="center">
+  <img src="visuals/reviews_distribution_rankgroup.png" width="800">
+</p>
 
 ## Key Insight
 
