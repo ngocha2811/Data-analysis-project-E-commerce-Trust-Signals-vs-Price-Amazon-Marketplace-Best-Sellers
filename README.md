@@ -1,8 +1,9 @@
 # Trust Signals vs Price in Amazon Best Sellers
+Python | Pandas | Selenium | Tableau | Data Analysis
 
 ### Data Analysis Project | Marketplace Strategy Case Study
 
-This project analyzes whether trust signals (ratings & reviews) or price variation show stronger association with sales performance among Amazon best-selling products.
+This project investigates whether social proof signals (ratings and review volume) show stronger association with sales performance than price variation among Amazon best sellers.
 
 I collected data on 6,000+ Amazon Best Sellers through web scraping, and the analysis explores how social proof dynamics and pricing strategies relate to sales intensity within competitive marketplace environments.
 
@@ -12,26 +13,11 @@ I collected data on 6,000+ Amazon Best Sellers through web scraping, and the ana
 
 ![Trust vs Sales](visuals/trust_vs_sales_scatter.png)
 
-### Distribution of Review Volume
+### Review Volume Distribution by Rank Group
 
 ![Median Reviews Distribution In 3 Rank Groups](visuals/reviews_distribution_rankgroup.png)
 
-## Data
-
-Collects 6000+ product datas including:
-- product title
-- price
-- rating
-- review count
-- best seller rank
-- units sold proxy
-- product's url
-- marketplace
-- date
-
-## Executive Summary
-
-Key findings:
+## Key Insight
 
 - Review volume shows stronger association with sales intensity than price variation.
 - Product ratings exhibit limited variation among best sellers, suggesting a minimum quality threshold.
@@ -66,6 +52,7 @@ An interactive Tableau dashboard was built to explore:
 
 ## Project Structure
 
+```
 amazon-trust-signals-analysis
 │
 ├── data/
@@ -80,25 +67,31 @@ amazon-trust-signals-analysis
 │   ├── reviews_distribution_rankgroup.png
 │   └── tableau_dashboard.png
 │
+├── src/
+│   ├── get_product_data.py
+│   └── get_bought_number.py
+│
 ├── tableau_dashboard/
 │   └── amazon_best_sellers_dashboard.twb
 │
 └── README.md
+```
 
-## Limitations
+## Data
 
-This analysis is correlational and does not establish causal relationships.
+The dataset contains 6,000 Amazon Best Seller products, collected via web scraping.
 
-Important considerations include:
+Each record includes:
 
-- Review volume may reflect past sales rather than cause them.
-- Sales performance is approximated using proxy metrics.
-- The dataset represents a cross-sectional snapshot.
-- Amazon's ranking algorithm includes additional factors not observable in this dataset.
-
-## Key Insight
-
-Within the Amazon best-seller segment, review volume shows stronger association with sales intensity than price variation, suggesting that social proof may play a critical role in sustaining high-performing products in competitive marketplaces.
+- Product title
+- Price
+- Rating
+- Review count
+- Best seller rank
+- Estimated units sold (proxy metric)
+- Product URL
+- Marketplace
+- Collection date
 
 ## Skills Demonstrated
 
@@ -110,11 +103,26 @@ Within the Amazon best-seller segment, review volume shows stronger association 
 - Interactive dashboard development (Tableau)
 - Marketplace strategy interpretation
 
+
+## Limitations & Future Development
+
+This analysis is correlational and does not establish causal relationships.
+
+Several limitations should be considered:
+
+- Review volume may reflect past sales rather than directly drive future sales.
+- Sales performance is approximated using proxy metrics rather than actual transaction data.
+- The dataset represents a cross-sectional snapshot and does not capture temporal dynamics.
+- Amazon's ranking algorithm includes additional factors (e.g., conversion rate, advertising, fulfillment speed) that are not observable in this dataset.
+
+Future development could extend this analysis by:
+
+- Collecting longitudinal data to study how reviews, price changes, and rankings evolve over time.
+- Incorporating additional marketplace signals such as seller reputation, fulfillment method (FBA vs FBM), and advertising activity.
+- Applying regression or causal inference methods to better estimate the relative influence of trust signals and price on sales performance.
+- Expanding the dataset to include multiple marketplaces or time periods to validate whether the observed patterns remain consistent.
+
+
 ## Author
 
-Data analysis project completed as part of my data analytics bootcamp.
-
-Focus areas:  
-- marketplace analytics  
-- e-commerce strategy  
-- data visualization
+Data analysis project developed as part of a data analytics bootcamp, focusing on marketplace analytics, e-commerce strategy, and data visualization.
