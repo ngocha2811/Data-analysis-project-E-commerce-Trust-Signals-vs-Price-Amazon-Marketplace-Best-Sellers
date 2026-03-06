@@ -15,13 +15,15 @@ I collected data on 6,000+ Amazon Best Sellers through web scraping, and the ana
   <img src="visuals/trust_vs_sales_scatter.png" width="800">
 </p>
 
-
+*Review volume tends to increase with higher sales intensity across rank groups. This suggests that products with stronger social proof accumulate sales momentum more easily.*
 
 ### Review Volume Distribution by Rank Group
 
 <p align="center">
-  <img src="visuals/reviews_distribution_rankgroup.png" width="800">
+  <img src="visuals/reviews_distribution_rankgroup.png" width="300">
 </p>
+
+*Top 10 products have significantly higher median review counts compared with lower-ranked products, indicating that accumulated social proof may reinforce marketplace visibility.*
 
 ## Key Insight
 
