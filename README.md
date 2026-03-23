@@ -1,141 +1,152 @@
-# Trust Signals vs Price in Amazon Best Sellers
-Python | Pandas | Selenium | Tableau | Data Analysis
+# Why Price Doesn’t Matter on Amazon Best Sellers?
+### A Data Analysis of Trust-Driven Sales
 
-### Data Analysis Project | Marketplace Strategy Case Study
+`Python` `Pandas` `NumPy` `SciPy` `Matplotlib` `Selenium` `Tableau`
 
-This project investigates whether social proof signals (ratings and review volume) show stronger association with sales performance than price variation among Amazon best sellers.
+---
 
-I collected data on 6,000+ Amazon Best Sellers through web scraping, and the analysis explores how social proof dynamics and pricing strategies relate to sales intensity within competitive marketplace environments.
+Author: Ngoc Ha Nguyen - [LinkedIn](https://www.linkedin.com/in/hannah-ngocha-nguyen)
 
-## Project Preview
+---
 
-### Trust Signals vs Sales Performance
+## The Question
 
-<p align="center">
-  <img src="visuals/trust_vs_sales_scatter.png" width="800">
-</p>
+Amazon best sellers compete on two levers sellers can actually control: **price** and **social proof** (ratings + review volume). Which one matters more?
 
-*Review volume tends to increase with higher sales intensity across rank groups. This suggests that products with stronger social proof accumulate sales momentum more easily.*
+This project collects 4,000 Amazon Best Seller products across 15 categories and 5 European marketplaces, then uses regression and segmentation analysis to quantify the relationship between trust signals, price, and sales intensity.
 
-### Review Volume Distribution by Rank Group
+---
 
-<p align="center">
-  <img src="visuals/reviews_distribution_rankgroup.png" width="300">
-</p>
+## Key Findings
 
-*Top 10 products have significantly higher median review counts compared with lower-ranked products, indicating that accumulated social proof may reinforce marketplace visibility.*
+**1. Review volume is the strongest predictor of sales intensity**
+A 10% increase in review count is associated with ~2.7% more units sold, holding price and rating constant (OLS, p < 0.001).
 
-## Key Insight
+**2. Price does not separate top performers from the rest**
+Top 10 products have a median price of €15.19. Products ranked 51–100 have a median of €14.99. The difference is not statistically significant (Mann-Whitney U, p = 0.60).
 
-- Review volume shows stronger association with sales intensity than price variation.
-- Product ratings exhibit limited variation among best sellers, suggesting a minimum quality threshold.
-- Price differences alone do not strongly explain differences in sales performance within the top-performing tier.
-- Social proof dynamics may reinforce sales momentum through visibility and credibility effects.
+**3. Top 10 products carry 3× more reviews than rank 51–100 products**
+Median review count: 9,428 (Top 10) vs 3,163 (51–100). This difference is highly significant (p < 0.001).
 
-These findings highlight the importance of trust accumulation strategies for marketplace sellers competing at the top tier.
+**4. The pattern is consistent across categories**
+Category is not a significant predictor in the global model (p = 0.62), suggesting social proof dynamics operate similarly regardless of product type.
 
-## Research Questions
+**5. Review elasticity varies by category**
+Amazon Devices (0.41) and Lighting (0.25) are most review-driven. Fashion (0.06) and Auto (0.06) are least — where brand or compatibility likely dominate purchase decisions.
 
-This project investigates three key questions:
+[→ Full analysis notebook](notebooks/02_analysis.ipynb)
 
-### 1. Trust Signals & Sales Performance
-Do ratings and review volume meaningfully differentiate product performance among best sellers?
+---
 
-### 2. Price Sensitivity Across Categories
-Does the relationship between price and sales vary across product categories?
+## Visuals
 
-### 3. What Distinguishes Top-Performing Best Sellers?
-Are there measurable structural factors (price level, rating, review volume) that distinguish higher-performing products within the Top 100 rankings?
+### What drives sales intensity?
+![Partial R²](visuals/01_partial_r2.png)
+*Review count explains 14% of variance in sales intensity on its own — more than price, rating, marketplace, or category combined.*
 
+### Reviews vs Sales
+![Reviews vs Sales](visuals/02_reviews_vs_sales.png)
+*Positive relationship holds consistently across all rank tiers.*
+
+[→ View on Tableau Public](https://public.tableau.com/app/profile/ngoc.ha.nguyen1781/viz/amazon_best_sellers_dashboard/Dashboard1)
+
+### What separates Top 10 from the rest?
+![Segmentation](visuals/03_segmentation_bars.png)
+*Reviews and units sold differ sharply across rank groups. Price does not.*
+
+### Price distribution by rank group
+![Price distribution](visuals/07_price_distribution.png)
+*Overlapping price distributions confirm that price is not the differentiating factor between rank tiers.*
+
+### Regression coefficients with 95% CI
+![Regression](visuals/06_regression_coefs.png)
+*OLS model: all predictors significant except category — the review-sales relationship holds broadly.*
+
+### Review elasticity by category
+![Category elasticity](visuals/05_category_elasticity.png)
+*Per-category regressions reveal where social proof matters most.*
+
+---
+
+## Methodology
+
+### Data collection
+- Scraped Amazon Best Seller pages using **Selenium** across 5 marketplaces (DE, ES, UK, FR, IT)
+- Collected product title, price, rating, review count, rank, and 'bought last month' badge
+- ~4,000 products across 15 categories (100 per category per marketplace)
+
+### Variable construction
+- `log_units_sold` — outcome variable; log of the 'bought last month' figure (proxy for sales intensity)
+- `log_reviews`, `log_price` — log-transformed to compress skew and enable elasticity interpretation
+- `rank_group` — segmented into Top 10 / 11–50 / 51–100
+
+### Analysis
+| Step | Method | Purpose |
+|------|--------|---------|
+| Global regression | OLS (numpy lstsq) | Quantify relative effect sizes with inference |
+| Partial R² | Single-predictor OLS | Rank predictors by independent explanatory power |
+| Segmentation | Kruskal-Wallis + Mann-Whitney U | Test whether rank groups differ statistically |
+| Category breakdown | Per-category OLS | Check whether review elasticity varies by product type |
+
+### Limitations
+- Correlational — cannot establish causal direction between reviews and sales
+- Outcome is a proxy metric (rounded bucket, not actual transaction data)
+- Single cross-sectional snapshot — no temporal dynamics
+- Amazon's algorithm includes unobservable factors (conversion rate, advertising, FBA status)
+
+---
 
 ## Interactive Dashboard
 
-An interactive Tableau dashboard was built to explore:
+Explore trust signals vs sales intensity, category-level patterns, and rank group characteristics in the Tableau dashboard:
 
-- Trust signals vs sales intensity
-- Category-level price sensitivity patterns
-- Structural characteristics of best sellers
+[→ View on Tableau Public](https://public.tableau.com/app/profile/ngoc.ha.nguyen1781/viz/amazon_best_sellers_dashboard/Dashboard1)
 
-![Tableau Dashboard](visuals/tableau_dashboard.png)
-[Link to Tableau Dashboard](https://public.tableau.com/app/profile/ngoc.ha.nguyen1781/viz/amazon_best_sellers_dashboard/Dashboard1)
+---
 
 ## Project Structure
 
 ```
-amazon-trust-signals-analysis
+amazon-trust-signals-analysis/
 │
 ├── data/
-│   ├── raw
-│   └── clean
+│   ├── raw/                        # Original scraped data
+│   └── clean/
+│       └── product_info_log_rank_group.csv
 │
 ├── notebooks/
-│   └── exploratory_analysis.ipynb
-│
-├── visuals/
-│   ├── trust_vs_sales_scatter.png
-│   ├── reviews_distribution_rankgroup.png
-│   └── tableau_dashboard.png
+│   └── analysis.ipynb              # Full analysis with narrative
 │
 ├── src/
-│   ├── get_product_data.py
-│   └── get_bought_number.py
+│   ├── get_product_data.py         # Selenium scraper
+│   ├── get_bought_number.py        # Units sold extraction
+│   └── generate_charts.py         # All chart generation
 │
-├── tableau_dashboard/
-│   └── amazon_best_sellers_dashboard.twb
+├── visuals/                        # Output charts
 │
 └── README.md
 ```
 
-## Data
+---
 
-The dataset contains 6,000 Amazon Best Seller products, collected via web scraping.
+## Reproducing the Analysis
 
-Each record includes:
+```bash
+# 1. Install dependencies
+pip install pandas numpy scipy scikit-learn matplotlib seaborn selenium
 
-- Product title
-- Price
-- Rating
-- Review count
-- Best seller rank
-- Estimated units sold (proxy metric)
-- Product URL
-- Marketplace
-- Collection date
+# 2. Generate all charts
+python src/generate_charts.py
 
-## Skills Demonstrated
+# 3. Open the notebook
+jupyter notebook notebooks/analysis.ipynb
+```
 
-- Web scraping with Selenium
-- Data cleaning and transformation with Pandas
-- Exploratory data analysis with Python
-- Correlation analysis
-- Data visualization (Matplotlib, Seaborn)
-- Interactive dashboard development (Tableau)
-- Marketplace strategy interpretation
+No non-standard dependencies. The regression uses `numpy.linalg.lstsq` directly — no statsmodels required.
 
-
-## Limitations & Future Development
-
-This analysis is correlational and does not establish causal relationships.
-
-Several limitations should be considered:
-
-- Review volume may reflect past sales rather than directly drive future sales.
-- Sales performance is approximated using proxy metrics rather than actual transaction data.
-- The dataset represents a cross-sectional snapshot and does not capture temporal dynamics.
-- Amazon's ranking algorithm includes additional factors (e.g., conversion rate, advertising, fulfillment speed) that are not observable in this dataset.
-
-Future development could extend this analysis by:
-
-- Collecting longitudinal data to study how reviews, price changes, and rankings evolve over time.
-- Incorporating additional marketplace signals such as seller reputation, fulfillment method (FBA vs FBM), and advertising activity.
-- Applying regression or causal inference methods to better estimate the relative influence of trust signals and price on sales performance.
-- Expanding the dataset to include multiple marketplaces or time periods to validate whether the observed patterns remain consistent.
-
+---
 
 ## Author
 
-This project was completed as my final project after 9 weeks of technical hands-on Bootcamp about Data Analytics at Ironhack.
-
-Ngoc Ha Nguyen
-LinkedIn:
-https://www.linkedin.com/in/hannah-ngocha-nguyen
+**Ngoc Ha Nguyen**  
+[LinkedIn](https://www.linkedin.com/in/hannah-ngocha-nguyen)
